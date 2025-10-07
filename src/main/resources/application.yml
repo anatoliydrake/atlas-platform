@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: atlas-platform
+
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/atlas_platform}
+    username: ${DATABASE_USERNAME:atlas_user}
+    password: ${DATABASE_PASSWORD:atlas_password}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+server:
+  port: ${SERVER_PORT:8080}
+
+logging:
+  level:
+    com.atlas.platform: DEBUG

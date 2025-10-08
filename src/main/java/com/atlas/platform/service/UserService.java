@@ -1,5 +1,7 @@
 package com.atlas.platform.service;
 
+import com.atlas.platform.dto.request.CreateUserRequest;
+import com.atlas.platform.dto.response.UserResponse;
 import com.atlas.platform.entity.User;
 import com.atlas.platform.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,36 +15,54 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public UserResponse createUser(CreateUserRequest request) {
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setTelegramId(request.getTelegramId());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+
+        return new UserResponse(userRepository.save(user));
     }
 
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public Optional<UserResponse> getUserById(Long id) {
+        return userRepository.findById(id)
+                .map(UserResponse::new);
     }
 
-    public Optional<User> getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public Optional<UserResponse> getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(UserResponse::new);
     }
 
-    public Optional<User> getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public Optional<UserResponse> getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(UserResponse::new);
     }
 
-    public Optional<User> getUserByTelegramId(Long telegramId) {
-        return userRepository.findByTelegramId(telegramId);
+    public Optional<UserResponse> getUserByTelegramId(Long telegramId) {
+        return userRepository.findByTelegramId(telegramId)
+                .map(UserResponse::new);
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponse> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(UserResponse::new)
+                .toList();
     }
 
     public User updateUser(User user) {
         return userRepository.save(user);
     }
 
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    public boolean deleteUser(Long id) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     public boolean existsByUsername(String username) {

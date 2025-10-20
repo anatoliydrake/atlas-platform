@@ -1,6 +1,6 @@
 package com.atlas.platform.controller;
 
-import com.atlas.platform.dto.request.CreateUserRequest;
+import com.atlas.platform.dto.request.RegisterRequest;
 import com.atlas.platform.dto.response.UserResponse;
 import com.atlas.platform.service.UserService;
 import jakarta.validation.Valid;
@@ -18,7 +18,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody RegisterRequest request) {
         return new ResponseEntity<>(userService.createUser(request), HttpStatus.CREATED);
     }
 

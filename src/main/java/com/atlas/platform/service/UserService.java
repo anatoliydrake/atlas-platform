@@ -1,10 +1,11 @@
 package com.atlas.platform.service;
 
-import com.atlas.platform.dto.request.CreateUserRequest;
+import com.atlas.platform.dto.request.RegisterRequest;
 import com.atlas.platform.dto.response.UserResponse;
 import com.atlas.platform.entity.User;
 import com.atlas.platform.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,12 +15,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserResponse createUser(CreateUserRequest request) {
+    public UserResponse createUser(RegisterRequest request) {
         User user = new User();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setTelegramId(request.getTelegramId());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
